@@ -1,13 +1,13 @@
 extends layout
 
-block content #{title}
+block content
   table.banner
     tbody
       tr.banner
         td.banner(width='250')
           img(src='/images/CloudMartLarge.png', width='210', height='140')
         td.banner
-          h1 Thank you for shopping at CloudMart.com
+          h1 Thank you for shopping at #{title}
   table#tabProds
     tbody
       tr
