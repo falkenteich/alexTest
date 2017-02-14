@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>CloudMart - Check Out</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no"/>
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<link rel="stylesheet" href="/style/style.css" />
+</head>
+<body>
+    <table class="banner">
+      <tr class="banner">
+        <td class="banner" width="250"><img src="/images/CloudMartLarge.png" width="210" height="140"></td>
+        <td class="banner"><h1>Thank you for shopping at CloudMart.com</h1></td>
+      </tr>
+    </table>
+	<table id='tabProds'><tbody>
+		<tr><th colspan="4"><span id="shoppingCart"></span></th></tr>
+	</tbody></table>
+    <form>
+    <table id='tabPay'><tbody>
+      <tr><th colspan="3">Payment Method</th></tr>
+      <tr>
+        <td>Credit Card</td>
+        <td>
+          <img src="/images/CreditCard-MasterCard.png" title="MasterCard" width="50" height="31">&nbsp;
+          <img src="/images/CreditCard-Visa.png" title="Visa" width="50" height="31">&nbsp;
+          <img src="/images/CreditCard-Discover.png" title="Discover Card" width="50" height="31">&nbsp;
+          <img src="/images/CreditCard-AmEx.png" title="American Express" width="50" height="31">&nbsp;
+          <img src="/images/CreditCard-Diners.png" title="Diners Club" width="50" height="31">&nbsp;
+          <img src="/images/CreditCard-JCB.png" title="JCB" width="50" height="31">&nbsp;
+          <div id="div-cc">
+            Card Number: <input type="text" id="acct-cc" size="20" maxlength="20" onkeyup="enablePay();" />
+            Exp: <input type="text" id="exp-cc" size="5" maxlength="5" onkeyup="enablePay();" />
+          </div>
+          <div id="msg-cc" style="color: green"></div>
+        </td>
+        <td>
+          <input type="button" id="btn-cc" name="btn-cc" value="Select" onclick="selectptype(0);" />
+          <span id="txt-cc">Selected</span>
+        </td>
+      </tr>
+      <tr>
+        <td>Rewards</td>
+        <td>
+          <img src="/images/Rewards-Nimbus.png" title="Nimbus Rewards" width="50" height="31">&nbsp;
+          <div id="div-rbc">
+            Card Number: <input type="text" id="acct-rbc" maxlength="20" onkeyup="enableQuery();" />
+            <span id="querySpinner"></span>
+            <input type="button" id="btn-rbcq" name="btn-rbcq" value="Check Balance" onclick="queryPoints();" />
+          </div>
+          <div id="msg-rbc" style="color: green"></div>
+        </td>
+        <td>
+          <input type="button" id="btn-rbc" name="btn-rbc" value="Select" onclick="selectptype(1);" />
+          <span id="txt-rbc">Selected</span>
+        </td>
+      </tr>
+      <tr>
+        <td>PayPal</td>
+        <td>
+          <img src="/images/PayPalLogo.png" title="PayPal" width="50" height="31">&nbsp;
+          <div id="div-pp">
+            E-mail: <input type="text" id="acct-pp" size="40" onkeyup="enablePay();" />
+          </div>
+          <div id="msg-pp" style="color: green"></div>
+        </td>
+        <td>
+          <input type="button" id="btn-pp" name="btn-pp" value="Select" onclick="selectptype(2);" />
+          <span id="txt-pp">Selected</span>
+        </td>
+      </tr>
+      <tr>
+      	<th colspan="3">
+      	  <span id="paySpinner"></span>
+          <input type="button" id="btn-submit" name="btn-submit" value="Pay" onclick="pay();" />
+      	</th>
+      </tr>
+    </tbody></table>
+    </form>
+    <table id='tabMsg' class='messages'>
+      <tbody>
+        <tr><td class='messages'>
+	      <div id="infoDiv" class='infoMsg'></div>
+  	    <div id="errorDiv" class='errorMsg'></div>
+        </td>
+      </tr>
+    </tbody></table>
+	<script type="text/javascript" src="/javascripts/util.js"></script>
+	<script type="text/javascript" src="/javascripts/index.js"></script>
+</body>
+</html>
