@@ -3,7 +3,8 @@ var express = require('express')
   , user = require('./routes/user')
   , http = require('http')
   , path = require('path')
-  , url = require('url');
+  , url = require('url')
+  , _ = require('underscore');
 
 var app = express();
 
