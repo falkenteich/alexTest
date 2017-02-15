@@ -116,6 +116,115 @@ app.get('/api/products', function(request, response) {
 	});
 });
 
+// Query rewards points.
+app.get("/api/queryPoints", function(req, res) {	
+	var retjson = {"RC":rcOK};
+	var queryObject = url.parse(req.url,true).query;
+	var account = queryObject.account;
+	var reqUrl = _.clone(apimUrl);
+	reqUrl.pathname += '/Inquiry';
+	reqUrl.query.account = account;
+	// Failsafe code for account 999
+	if (account==="999") {
+		retjson.account = account;
+		retjson.points = 1000;
+		retjson.msg = successMsgBalance(retjson.points);
+		console.log("******** FAILSAFE retjson="+JSON.stringify(retjson));
+		res.write(JSON.stringify(retjson));
+		res.end();
+		return;
+	}
+	console.log("******** Submitting Inquiry request to "+url.format(reqUrl));
+	request.get({
+		url: url.format(reqUrl),
+		json: true
+	}, function(err, resp, body) {
+		if (body) {
+			console.log("******** body="+JSON.stringify(body));
+			if (body.RC) {
+				retjson.RC = parseInt(body.RC,10);
+				if (retjson.RC === 0) {
+					retjson.account = body.account;	
+					retjson.points = parseInt(body.points,10);
+					retjson.msg = successMsgBalance(retjson.points);
+				} else {
+					retjson.msg = errorMsgBalance(account, body.message);
+				}
+			} else {
+				retjson.RC = 2;
+				retjson.msg = errorMsgBalance(account, body.httpCode+": "+body.httpMessage+" - "+body.moreInformation);
+			}
+		} else {
+			retjson.RC = 99;
+			retjson.msg = errorMsgBalance(account, err);
+		}
+		console.log("******** retjson="+JSON.stringify(retjson));
+		res.write(JSON.stringify(retjson));
+		res.end();
+	});
+});
+
+// handle check outs
+app.get("/api/checkout", function(req, res) {
+	var retjson = {"RC":rcOK};
+	var queryObject = url.parse(req.url,true).query;
+	var ptype = queryObject.ptype;
+	var account = queryObject.account;
+	var price = queryObject.price;
+	var points = queryObject.points;
+	// If the account number is passed in as a negative number then we negate the points passed in.
+	// So in effect we add the points to the account rather than deduct them.
+	if (account<0) {
+		account = -account;
+		points = -points;
+	}
+	if (ptype!=="Rewards Points") {
+		retjson.points = points - price;
+		retjson.msg = successMsgCheckoutCash(ptype, account, price);
+		res.write(JSON.stringify(retjson));
+		res.end();
+	} else if (account==="999") { // Failsafe code for account 999
+		retjson.account = account;
+		retjson.points = 1000 - points;
+		retjson.msg = successMsgCheckoutPoints(points, retjson.points);
+		console.log("******** FAILSAFE retjson="+JSON.stringify(retjson));
+		res.write(JSON.stringify(retjson));
+		res.end();
+	} else {
+		var reqUrl = _.clone(apimUrl);
+		reqUrl.pathname += '/DecrementPoints';
+		reqUrl.query.account = account;
+		reqUrl.query.points = points;
+		console.log("******** Submitting DecrementPoints request to "+url.format(reqUrl));
+		request.get({
+			url: url.format(reqUrl),
+			json: true
+		}, function(err, resp, body) {
+			if (body) {
+				console.log("******** body="+JSON.stringify(body));
+				if (body.RC) {
+					retjson.RC = parseInt(body.RC,10);
+					if (retjson.RC === 0) {
+						retjson.account = body.account;	
+						retjson.points = parseInt(body.points,10);
+						retjson.msg = successMsgCheckoutPoints(points, retjson.points);
+					} else {
+						retjson.msg = errorMsgCheckout(body.message);
+					}
+				} else {
+					retjson.RC = 2;
+					retjson.jsg = errorMsgCheckout(body.httpCode+": "+body.httpMessage+" - "+body.moreInformation);
+				}
+			} else {
+				retjson.RC = 99;
+				retjson.msg = errorMsgCheckout(err);
+			}
+			console.log("******** retjson="+JSON.stringify(retjson));
+			res.write(JSON.stringify(retjson));
+			res.end();
+		});
+	}
+});
 
 console.log("AF: Create Express server on port " + app.get('port'));
 http.createServer(app).listen(app.get('port'), function(){

@@ -21,18 +21,12 @@ block content
         tr
           td Credit Card
           td
-            img(src='/images/CreditCard-MasterCard.png', title='MasterCard', width='50', height='31')
-            | &nbsp;
-            img(src='/images/CreditCard-Visa.png', title='Visa', width='50', height='31')
-            | &nbsp;
-            img(src='/images/CreditCard-Discover.png', title='Discover Card', width='50', height='31')
-            | &nbsp;
-            img(src='/images/CreditCard-AmEx.png', title='American Express', width='50', height='31')
-            | &nbsp;
-            img(src='/images/CreditCard-Diners.png', title='Diners Club', width='50', height='31')
-            | &nbsp;
-            img(src='/images/CreditCard-JCB.png', title='JCB', width='50', height='31')
-            | &nbsp;
+            img(src='/images/CreditCard-MasterCard.png', title='MasterCard', width='50', height='31', style='padding-right:10px')
+            img(src='/images/CreditCard-Visa.png', title='Visa', width='50', height='31', style='padding-right:10px')
+            img(src='/images/CreditCard-Discover.png', title='Discover Card', width='50', height='31', style='padding-right:10px')
+            img(src='/images/CreditCard-AmEx.png', title='American Express', width='50', height='31', style='padding-right:10px')
+            img(src='/images/CreditCard-Diners.png', title='Diners Club', width='50', height='31', style='padding-right:10px')
+            img(src='/images/CreditCard-JCB.png', title='JCB', width='50', height='31', style='padding-right:10px')
             #div-cc
               | Card Number: 
               input#acct-cc(type='text', size='20', maxlength='20', onkeyup='enablePay();')
@@ -45,8 +39,7 @@ block content
         tr
           td Rewards
           td
-            img(src='/images/Rewards-Nimbus.png', title='Nimbus Rewards', width='50', height='31')
-            | &nbsp;
+            img(src='/images/Rewards-Nimbus.png', title='Nimbus Rewards', width='50', height='31', style='padding-right:10px')
             #div-rbc
               | Card Number: 
               input#acct-rbc(type='text', maxlength='20', onkeyup='enableQuery();')
@@ -59,8 +52,7 @@ block content
         tr
           td PayPal
           td
-            img(src='/images/PayPalLogo.png', title='PayPal', width='50', height='31')
-            | &nbsp;
+            img(src='/images/PayPalLogo.png', title='PayPal', width='50', height='31', style='padding-right:10px')
             #div-pp
               | E-mail: 
               input#acct-pp(type='text', size='40', onkeyup='enablePay();')

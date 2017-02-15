@@ -21,32 +21,26 @@ enablePay();
 
 function loadProducts(){
     console.log("AF: time to load the products");
-    alert("time to load the products");
 	showLoadingMessage();
 	xhrGet('api/products', function(retjson) {
 		stopLoadingMessage();
-        console.log("AF: RC="+retjson.RC);
 		if (retjson.RC===0) {
 			var table = document.getElementById('tabProds');
 			var row;
-            console.log("AF: Build the header row");
 			row = document.createElement('tr');
 			row.className = "tableRows";
 			row.innerHTML = "<th>Select</th><th>Description</th><th>Cash Price</th><th>Points Price</th>";
 			table.lastChild.appendChild(row);
 			if (retjson.products) for(var i = 0; i < retjson.products.length; ++i) {
-                console.log("AF: Build a data row");
 				var product = retjson.products[i];
 				totalCashPrice += product.price;
 				totalPointsPrice += product.points;
-                console.log("AF: product="+product.name);
-				row = document.createElement('tr');
+                row = document.createElement('tr');
 				row.className = "tableRows";
 				row.innerHTML = "<td><input id='cb-"+product.sku+"' type='checkbox' checked='checked' onchange='updateCart(\""+product.sku+"\");' /></td><td>"+product.name+"</td><td id='prc-"+product.sku+"' style='text-align:right'>$"+product.price.toFixed(2)+"</td><td id='pts-"+product.sku+"' style='text-align:right'>"+product.points+"</td>";
 				table.lastChild.appendChild(row);
 			}
-            console.log("AF: Build the totals row");
-			row = document.createElement('tr');
+            row = document.createElement('tr');
 			row.className = "tableRows";
 			row.innerHTML = "<th>&nbsp;</th><th>Total</th><th id='prc-Total' style='text-align:right'>$"+totalCashPrice.toFixed(2)+"</th><th id='pts-Total' style='text-align:right'>"+totalPointsPrice+"</th></tr>";
 			table.lastChild.appendChild(row);
@@ -61,12 +55,10 @@ function loadProducts(){
 
 function showLoadingMessage()
 {
-    console.log("AF: showLoadingMessage");
 	document.getElementById('shoppingCart').innerHTML = "<img height=\"100\" width=\"100\" src=\"images/loading.gif\"></img>";
 }
 function stopLoadingMessage()
 {
-    console.log("AF: stopLoadingMessage");
 	document.getElementById('shoppingCart').innerHTML = "Shopping Cart";
 }
 loadProducts();
@@ -102,8 +94,6 @@ function updateCart(sku) {
 
 function selectptype(btn) {
 	btnSelected = btn;
-    console.log("AF: A type was just selected");
-    alert("Payment type selected. Fill in the details.");
 	for (var i=0; i<btns.length; i++) {
 		btns[i].style.display = btn===i ? "none" : "inline";
 		txts[i].style.display = btn===i ? "inline" : "none";
