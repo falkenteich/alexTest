@@ -48,8 +48,74 @@ var cloudant = require('cloudant')(dbCredentials.url);
 var db = cloudant.use(dbCredentials.dbName);
 console.log("AF: dbCredentials="+JSON.stringify(dbCredentials));
 
+function errorMsgBalance(account, details) {
+	return account==="998"
+			? "Error getting points balance.<br />"+details
+			: "Invalid Rewards Number.";
+}
+function successMsgBalance(points) {
+	return "You have a balance of "+points+" points.";
+}
+function errorMsgCheckout(details) {
+	return "Error checking out.<br />"+details;
+}
+function successMsgCheckoutCash(ptype, account, price) {
+	var msg = "Your order has been submitted.<br />";
+	msg += ptype+" account "+account+" has been billed $"+price+".<br />";
+	return msg;
+}
+function successMsgCheckoutPoints(points, balance) {
+	var msg = "Thank you! Your order has been submitted.<br />";
+	msg += "Your rewards account has been decreased by "+points+" points.<br />";
+	msg += "Your remaining balance is "+balance+" points.<br />";
+	return msg;
+}
+
 app.get('/', routes.index);
 app.get('/users', user.list);
+
+app.get('/api/products', function(request, response) {
+	console.log("Get products");
+	db = cloudant.use(dbCredentials.dbName);
+	var retjson = {"RC":rcOK};
+	var products = [];
+	var i = 0;
+	db.list(function(err, body) {
+		if (!err) {
+			var len = body.rows.length;
+			console.log("******** total # of products -> "+len);
+			body.rows.forEach(function(document) {
+				db.get(document.id, { revs_info: true }, function(err, doc) {
+					i++;
+					if (!err) {
+						products.push({
+							id : doc._id,
+							name : doc.name,
+							sku : doc.sku,
+							price : doc.price,
+							points : doc.points
+						});
+					} else {
+						retjson.RC = rcError;
+						retjson.msg = "Error getting product.<br />"+err;
+					}
+					if (i === len) {
+						retjson.products = products;
+						response.write(JSON.stringify(retjson));
+						response.end();
+					}
+				});
+			});
+		} else {
+			console.log("******** "+err);
+			retjson.RC = rcError;
+			retjson.msg = "Error getting product list.<br />"+err;
+			response.write(JSON.stringify(retjson));
+			response.end();
+		}
+	});
+});
+
 
 console.log("AF: Create Express server on port " + app.get('port'));
 http.createServer(app).listen(app.get('port'), function(){
