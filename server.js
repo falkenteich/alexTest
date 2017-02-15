@@ -38,9 +38,14 @@ var rcError   = 2;
 var rcUnknown = 99;
 
 console.log("AF: Set up to talk to Cloudant");
-var db;
-var cloudant;
 var dbCredentials = { dbName : 'product_db' };
+dbCredentials.host = "45ccfedc-4878-41e6-920b-8de235ae90f0-bluemix.cloudant.com";
+dbCredentials.port = 443;
+dbCredentials.user = "45ccfedc-4878-41e6-920b-8de235ae90f0-bluemix";
+dbCredentials.password = "fee05410105e7a16ed4df2e57a4e95f057afe44f47e52a61b6bc5cdd74794306";
+dbCredentials.url = "https://45ccfedc-4878-41e6-920b-8de235ae90f0-bluemix:fee05410105e7a16ed4df2e57a4e95f057afe44f47e52a61b6bc5cdd74794306@45ccfedc-4878-41e6-920b-8de235ae90f0-bluemix.cloudant.com";
+var cloudant = require('cloudant')(dbCredentials.url);
+var db = cloudant.use(dbCredentials.dbName);
 console.log("AF: dbCredentials="+JSON.stringify(dbCredentials));
 
 app.get('/', routes.index);
