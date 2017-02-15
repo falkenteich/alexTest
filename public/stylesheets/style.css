@@ -3,10 +3,6 @@ body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
-a {
-  color: #00B7FF;
-}
-
-table {
-  border: 1px solid;
-}
+a { color: #00B7FF; }
+table { border: 2px solid black; }
+td { border: 1px solid black; }
