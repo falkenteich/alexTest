@@ -21,6 +21,7 @@ enablePay();
 
 function loadProducts(){
     console.log("AF: time to load the products");
+    alert("time to load the products");
 	showLoadingMessage();
 	xhrGet('api/products', function(retjson) {
 		stopLoadingMessage();
@@ -102,6 +103,7 @@ function updateCart(sku) {
 function selectptype(btn) {
 	btnSelected = btn;
     console.log("AF: A type was just selected");
+    alert("Payment type selected. Fill in the details.");
 	for (var i=0; i<btns.length; i++) {
 		btns[i].style.display = btn===i ? "none" : "inline";
 		txts[i].style.display = btn===i ? "inline" : "none";
